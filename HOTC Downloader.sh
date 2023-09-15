@@ -1,33 +1,33 @@
 #!/bin/bash
 
-# Vérifie si le fichier d'entrée est spécifié
+# Checks if input file is specified
 if [ $# -ne 1 ]; then
-    echo "Usage: $0 fichier_identifiants.txt"
-    exit 1
+  echo "Usage: $0 ID_file.txt"
+  exit 1
 fi
 
-# Assurez-vous que le dossier de destination existe
+# Make sure the destination folder exists
 destination_folder="images"
 mkdir -p "$destination_folder"
 
-# Lire le fichier d'identifiants ligne par ligne
+# Read the ID file line by line
 input_file="$1"
 while IFS= read -r identifier; do
-    # Adapter l'identifiant au format de l'URL
-    formatted_identifier=$(echo "$identifier" | tr / -)
+  # Adapt identifier to URL format
+  formatted_identifier=$(echo "$identifier" | tr / -)
 
-    # Construire l'URL de téléchargement à partir de l'identifiant formaté
-    url="https://heartofthecards.com/images/cards/ws/$formatted_identifier.png"
+  # Construct download URL from formatted identifier
+  url="https://heartofthecards.com/images/cards/ws/$formatted_identifier.png"
 
-    # Télécharger l'image
-    wget -q -P "$destination_folder" "$url"
+  # Download image
+  wget -q -P "$destination_folder" "$url"
 
-    # Vérifier si le téléchargement a réussi
-    if [ $? -eq 0 ]; then
-        echo "Téléchargé: $url"
-    else
-        echo "Échec du téléchargement: $url"
-    fi
-done < "$input_file"
+  # Check if the download was successful
+  if [ $? -eq 0 ]; then
+    echo "Downloaded: $url"
+  else
+    echo "Download failed: $url"
+  fi
+done <"$input_file"
 
-echo "Téléchargement terminé."
+echo "Download complete."
